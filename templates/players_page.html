@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Игроки
+{% endblock %}
+
+{% block body %}
+
+<div class="row justify-content-center">
+<div class="col-4">
+    <form method="post">
+        <h1 class="h3 mb-3 fw-normal">Введите итмена игроков:</h1>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="player1" name="player1" placeholder=20> <br>
+            <label>Игрок 1</label>
+        </div>
+        <div class="checkbox mb-3"></div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="player2" name="player2" placeholder=20> <br>
+            <label>Игрок 2</label>
+        </div>
+        <div class="checkbox mb-3"></div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="player3" name="player3" placeholder=20> <br>
+            <label>Игрок 3 (необязательно)</label>
+        </div>
+        <div class="checkbox mb-3"></div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="player4" name="player4" placeholder=20> <br>
+            <label>Игрок 4 (необязательно)</label>
+        </div>
+        <div class="checkbox mb-3"></div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="player5" name="player5" placeholder=20> <br>
+            <label>Игрок 5 (необязательно)</label>
+        </div>
+        <div class="checkbox mb-3"></div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="player6" name="player6" placeholder=20> <br>
+            <label>Игрок 6 (необязательно)</label>
+        </div>
+        <input type="submit" class="w-100 btn btn-lg btn-primary" value="Далее">
+    </form>
+</div>
+</div>
+{% endblock %}

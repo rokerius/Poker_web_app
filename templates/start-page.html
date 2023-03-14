@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-4">
+        <img class="rounded mx-auto d-block" src="" alt="" width="375" height="315">
+        <h1 class="h3 mb-3 fw-normal">Введите параметры игры:</h1>
+        <form method="post">
+            <div class="form-floating">
+                <input type="number" name="start_chips" id="start_chips" class="form-control"><br>
+                <label>Начальные фишки</label>
+            </div>
+            <div class="checkbox mb-3"></div>
+            <div class="form-floating">
+                <input type="number" name="small_blind" id="small_blind" class="form-control"><br>
+                <label>Малый блайнд</label>
+            </div>
+        <div class="checkbox mb-3"></div>
+        <input type="submit" class="w-100 btn btn-lg btn-primary" value="Далее">
+        </form>
+    </div>
+</div>
+{% endblock %}
