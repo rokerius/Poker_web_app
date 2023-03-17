@@ -59,60 +59,44 @@
 .players .player {
     position: absolute;
 }
-.players .player.player-1 {
+.players .player-1 {
     top: 6%;
-    left:50%;
+    left: 30%;
     transform: translatex(-50%) translatey(-50%);
 }
-
-.players .player.player-2 {
+.players .player-2 {
     top: 6%;
-    left: 80%;
+    left: 70%;
     transform: translatex(-50%) translatey(-50%);
 }
-
-.players .player.player-3 {
+.players .player-3 {
     top: 45%;
     left: 93%;
     transform: translatex(-50%) translatey(-50%);
 }
-
-.players .player.player-4 {
+.players .player-4 {
     top: 88%;
-    left: 80%;
+    left: 70%;
     transform: translatex(-50%) translatey(-50%);
 }
-
-.players .player.player-5 {
+.players .player-5 {
     top: 88%;
-    left: 50%;
+    left: 30%;
     transform: translatex(-50%) translatey(-50%);
 }
-.players .player.player-6 {
-    top: 88%;
-    left: 20%;
-    transform: translatex(-50%) translatey(-50%);
-}
-
-.players .player.player-7 {
+.players .player-6 {
     top: 45%;
     left: 7%;
     transform: translatex(-50%) translatey(-50%);
 }
-
-.players .player.player-8 {
-    top: 6%;
-    left: 20%;
-    transform: translatex(-50%) translatey(-50%);
-}
-.players .player .avatar {
-    width: 15vh;
-    height: 15vh;
+.players .avatar {
+    width: 13vh;
+    height: 13vh;
     background-color: lightcoral;
     border-radius: 100%;
     position: relative;
     top: 20px;
-    z-index: 1;
+    z-index: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,18 +105,97 @@
     font-weight: bold;
     font-size: 1.5vw;
 }
+.cards .cards_player-1 {
+    position: absolute;
+    top: -25%;
+    left: 15%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards .cards_player-2 {
+    position: absolute;
+    top: -25%;
+    left: 55%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards .cards_player-3 {
+    position: absolute;
+    top: 10%;
+    left: 107%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards .cards_player-4 {
+    position: absolute;
+    top: 118%;
+    left: 85%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards .cards_player-5 {
+    position: absolute;
+    top: 118%;
+    left: 45%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards .cards_player-6 {
+    position: absolute;
+    top: 80%;
+    left: -7%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards .ava_cards{
+    width: 21vh;
+    height: 21vh;
+    background-color: lightcoral;
+    border-radius: 10%;
+    position: relative;
+    z-index: 1;
+    top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 1.5vw;
+}
+.block_cards{
+    border: 4px solid darkblue;
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    width: 90%;
+    height: 70%;
+}
+.chips{
+    position: absolute;
+    top: 75%;
+    width: 60%;
+    border: 4px solid darkblue;
+}
+img {
+    border: 3px solid #00a8e1;
+   }
+.table_block {
+    border: 3px solid #00a8e1;
+    position: relative;
+    width: 50%;
+    top: -50%;
+    left: 50%;
+    transform: translatex(-50%) translatey(-50%);
+}
+.cards_on_table{
+    position: relative;
+    display: inline-block
 
+
+}
 #main{
     position: absolute;
-        width: 80%;
-        height: 60%;
-        /*overflow: none;*/
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-
-
+    width: 60%;
+    height:45%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 9%;
+    bottom: 0;
 }
 
