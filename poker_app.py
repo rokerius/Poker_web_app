@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
+from player import Player
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///storage.db'
@@ -11,15 +12,19 @@ db = SQLAlchemy(app)
 class WEB_Replies(object):
     def __init__(self):
         self.answer = None
-        self.app_players = 0
+        self.app_players = []
         self.app_sb = 0
-        self.app_start_chips = 0
+        self.app_chips = []
+        self.bank = 0
+        self.id_p_now = 0
+        self.possible_responses = ["fold", "check", "call", "all-in", "raise"]
 
     def start_info_update_players(self, players):
-        self.app_players = players.split()
+        for i in range(len(players.split())):
+            self.app_players.append(Player(players.split()[i]))
 
     def start_info_update_chips(self, start_chips, small_blind):
-        self.app_start_chips = start_chips
+        self.app_chips = start_chips
         self.app_sb = small_blind
 
 
@@ -32,6 +37,9 @@ class Article(db.Model):
 
     def __repr__(self):
         return '<Article %r>' % self.id
+
+
+act = WEB_Replies()
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -66,9 +74,10 @@ def players():
         player4 = request.form['player4']
         player5 = request.form['player5']
         player6 = request.form['player6']
-        print(player1+" "+player2+" "+player3+" "+player4+" "+player5+" "+player6)
+        print(player1 + " " + player2 + " " + player3 + " " + player4 + " " + player5 + " " + player6)
 
-        act.start_info_update_players(player1+" "+player2+" "+player3+" "+player4+" "+player5+" "+player6)
+        act.start_info_update_players(
+            player1 + " " + player2 + " " + player3 + " " + player4 + " " + player5 + " " + player6)
 
         # article = Article(name=player1+" "+player2+" "+player3+" "+player4+" "+player5+" "+player6,
         #                   smth2="Игроки")
@@ -88,9 +97,15 @@ def players():
 
 @app.route('/the_game')
 def the_game():
-    return render_template("the_game.html")
+    list_of_chips = []
+    for i in range(len(act.app_players)):
+        list_of_chips.append(act.app_chips)
+    print(act.app_players)
+    print(list_of_chips)
+    return render_template("the_game.html", start_players=act.app_players, number_of_players=len(act.app_players),
+                           chips=list_of_chips, bank=act.bank, id_p_now=act.id_p_now,
+                           possible_responses=act.possible_responses)
 
 
 if __name__ == "__main__":
-    act = WEB_Replies()
     app.run(debug=True)
