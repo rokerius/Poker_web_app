@@ -21,35 +21,34 @@
       </ul>
       <div class="col-md-3 text-end"></div>
     </header>
-    <div>
+    <div></div>
 
-    </div>
     <div id="main">
         <div class="players">
                 <div class="player player-1" id="player1" >
-                <div class="avatar" style="background: blue;">{{ start_players[0].name }}</div>
+                <div class="avatar" style="background: blue;">{{ game.players.split()[0] }}</div>
             </div>
                 <div class="player player-2"  id="player2">
-            <div class="avatar" style="background: red;"><p>{{ start_players[1] }}</p></div>
+            <div class="avatar" style="background: red;"><p>{{ game.players.split()[1] }}</p></div>
         </div>
-            {% if number_of_players > 2 %}
+            {% if game.number_of_players > 2 %}
                 <div class="player player-3"  id="player3">
-            <div class="avatar" style="background: cyan;">{{ start_players[2] }}</div>
+            <div class="avatar" style="background: cyan;">{{ game.players.split()[2] }}</div>
         </div>
             {% endif %}
-            {% if number_of_players > 3 %}
+            {% if game.number_of_players > 3 %}
                 <div class="player player-4"  id="player4">
-            <div class="avatar" style="background: gold;">{{ start_players[3] }}</div>
+            <div class="avatar" style="background: gold;">{{ game.players.split()[3] }}</div>
         </div>
             {% endif %}
-            {% if number_of_players > 4 %}
+            {% if game.number_of_players > 4 %}
                 <div class="player player-5"  id="player5">
-            <div class="avatar" style="background: black;">{{ start_players[4] }}</div>
+            <div class="avatar" style="background: black;">{{ game.players.split()[4] }}</div>
         </div>
             {% endif %}
-            {% if number_of_players > 5 %}
+            {% if game.number_of_players > 5 %}
                 <div class="player player-6"  id="player6">
-            <div class="avatar" style="background: brown;">{{ start_players[5] }}</div>
+            <div class="avatar" style="background: brown;">{{ game.players.split()[5] }}</div>
 
         </div>
             {% endif %}
@@ -59,74 +58,74 @@
             <div class="cards_player-1" id="player1_cards" >
             <div class="ava_cards" style="background: blue;">
                 <div class="block_cards">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
+                    <img src="/static/img/cards/{{players_db[0].cards.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/{{players_db[0].cards.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
                 </div>
-                <div class="chips">chips: {{ chips[0] }}</div>
+                <div class="chips">chips: {{ players_db[0].chips }}</div>
             </div>
         </div>
             <div class="cards_player-2"  id="player2_cards">
             <div class="ava_cards" style="background: red;">
                 <div class="block_cards">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
+                    <img src="/static/img/cards/{{players_db[1].cards.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/{{players_db[1].cards.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
                 </div>
-                <div class="chips">chips: {{ chips[1] }}</div>
+                <div class="chips">chips: {{ players_db[1].chips }}</div>
             </div>
         </div>
-            {% if number_of_players > 2 %}
+            {% if game.number_of_players > 2 %}
                 <div class="cards_player-3"  id="player3_cards">
             <div class="ava_cards" style="background: cyan;">
                 <div class="block_cards">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
+                    <img src="/static/img/cards/{{players_db[2].cards.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/{{players_db[2].cards.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
                 </div>
-                <div class="chips">chips: {{ chips[2] }}</div>
+                <div class="chips">chips: {{ players_db[2].chips }}</div>
             </div>
         </div>
             {% endif %}
-            {% if number_of_players > 3 %}
+            {% if game.number_of_players > 3 %}
                 <div class="cards_player-4"  id="player4_cards">
             <div class="ava_cards" style="background: gold;">
                 <div class="block_cards">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
+                    <img src="/static/img/cards/{{players_db[3].cards.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/{{players_db[3].cards.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
                 </div>
-                <div class="chips">chips: {{ chips[3] }}</div>
+                <div class="chips">chips: {{ players_db[3].chips }}</div>
             </div>
         </div>
             {% endif %}
-            {% if number_of_players > 4 %}
+            {% if game.number_of_players > 4 %}
                 <div class="cards_player-5"  id="player5_cards">
             <div class="ava_cards" style="background: black;">
                 <div class="block_cards">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
+                    <img src="/static/img/cards/{{players_db[4].cards.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/{{players_db[4].cards.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
                 </div>
-                <div class="chips">chips: {{ chips[4] }}</div>
+                <div class="chips">chips: {{ players_db[4].chips }}</div>
             </div>
         </div>
             {% endif %}
-            {% if number_of_players > 5 %}
+            {% if game.number_of_players > 5 %}
                 <div class="cards_player-6"  id="player6_cards)">
             <div class="ava_cards" style="background: brown;">
                 <div class="block_cards">
-                    <img src="F:/Poker_connection_to_WEB_APP/1.png"
-                        width="189" height="255" alt="card1">
-                    <img src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
+                    <img src="/static/img/cards/{{players_db[5].cards.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/{{players_db[5].cards.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
                 </div>
-                <div class="chips">chips: {{ chips[5] }}</div>
+                <div class="chips">chips: {{ players_db[5].chips }}</div>
             </div>
         </div>
             {% endif %}
@@ -136,43 +135,57 @@
         </div>
         <div class="table_block">
             <div class="cards_on_table">
-                <img class="123cards" src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card1">
-                <img class="123cards" src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card2">
-                <img class="123cards" src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card3">
-                <img class="4cards" src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card4">
-                <img class="5cards" src="F:/Project_Poker_preFINAL/POKER_preFINAL/cards/Ace of Clubs.png"
-                        width="189" height="255" alt="card5">
+                <img class="123cards"
+                     src="/static/img/cards/{{game.cards_on_table.split(',')[0]}}.png"
+                        width="100" height="150" alt="card1">
+                <img class="123cards"
+                     src="/static/img/cards/{{game.cards_on_table.split(',')[1]}}.png"
+                        width="100" height="150" alt="card2">
+                <img class="123cards"
+                     src="/static/img/cards/{{game.cards_on_table.split(',')[2]}}.png"
+                        width="100" height="150" alt="card3">
+                <img class="4cards"
+                     src="/static/img/cards/{{game.cards_on_table.split(',')[3]}}.png"
+                        width="100" height="150" alt="card4">
+                <img class="5cards"
+                     src="/static/img/cards/{{game.cards_on_table.split(',')[4]}}.png"
+                        width="100" height="150" alt="card5">
             </div>
             <div class="bank">
-                bank: {{ bank }}
+                bank: {{ game.bank }}
             </div>
         </div>
-        <div class="action_block">
-            Ход {{ start_players[id_p_now] }}:
+        {% if game.row != 0 %}
+            <div class="action_block">
+            Ход {{ players_db[id_p_now].name }}:
             <form method="POST"> <!--possible responses-->
-                {% if "fold" in possible_responses%}
-                    <input type="radio" name="player_action" value="fold"> fold
+                {% if "fold" in players_db[id_p_now].possible_responses%}
+                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="fold"> fold </div>
                 {% endif %}
-                {% if "all-in" in possible_responses%}
-                    <input type="radio" name="player_action" value="all-in"> all-in
+                {% if "all-in" in players_db[id_p_now].possible_responses%}
+                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="all-in"> all-in </div>
                 {% endif %}
-                {% if "raise" in possible_responses%}
-                    <input type="radio" name="player_action" value="raise"> raise
+                {% if "raise" in players_db[id_p_now].possible_responses%}
+                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="raise"> raise </div>
                 {% endif %}
-                {% if "call" in possible_responses%}
-                    <input type="radio" name="player_action" value="raise"> call
+                {% if "call" in players_db[id_p_now].possible_responses%}
+                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="raise"> call </div>
                 {% endif %}
-                {% if "check" in possible_responses%}
-                    <input type="radio" name="player_action" value="check"> check
+                {% if "check" in players_db[id_p_now].possible_responses%}
+                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="check"> check </div>
                 {% endif %}
 
-                <input type="submit" value="Готово">
+                <input class="btn btn-primary" type="submit" value="Сделать ход">
             </form>
         </div>
+        {% elif game.row == 0 %}
+            <div class="start_block">
+                <form method="POST">
+                    <input type="hidden" name="row" value="1">
+                    <input name="start-button" id="start-button" type="submit" class="btn btn-primary btn-lg btn-block">
+                </form>
+            </div>
+        {% endif %}
     </div>
 
     <footer class="page-footer font-small mdb-color darken-3 pt-4">
@@ -183,5 +196,7 @@
       <span class="mb-3 mb-md-0 text-muted">© 2023 Deniska_Project</span>
     </div>
   </footer>
+
+    <script src="static/scripts/game_scrypt.js"></script>
 </body>
 </html>
