@@ -135,27 +135,45 @@
         </div>
         <div class="table_block">
             <div class="cards_on_table">
-                <img class="123cards"
+                {% if game.cards_show_status > 0%}
+                    <img class="123cards"
                      src="/static/img/cards/{{game.cards_on_table.split(',')[0]}}.png"
                         width="100" height="150" alt="card1">
-                <img class="123cards"
+                    <img class="123cards"
                      src="/static/img/cards/{{game.cards_on_table.split(',')[1]}}.png"
                         width="100" height="150" alt="card2">
-                <img class="123cards"
+                    <img class="123cards"
                      src="/static/img/cards/{{game.cards_on_table.split(',')[2]}}.png"
                         width="100" height="150" alt="card3">
-                <img class="4cards"
+                {% endif %}
+                {% if game.cards_show_status > 1 %}
+                    <img class="4cards"
                      src="/static/img/cards/{{game.cards_on_table.split(',')[3]}}.png"
                         width="100" height="150" alt="card4">
-                <img class="5cards"
+                {% endif %}
+                {% if game.cards_show_status > 2 %}
+                    <img class="5cards"
                      src="/static/img/cards/{{game.cards_on_table.split(',')[4]}}.png"
                         width="100" height="150" alt="card5">
+                {% endif %}
             </div>
             <div class="bank">
-                bank: {{ game.bank }}
+                bank: {{ game.pot }}
             </div>
         </div>
-        {% if game.row != 0 %}
+
+        {% if game.bet_ask %}
+            <div class="bet_ask_block">
+            <form method="POST">
+                <div class="form-floating">
+                    <input type="number" name="bet" id="bet" class="form-control"><br>
+                    <label>Ставка</label>
+                </div>
+                <input type="submit" class="w-100 btn btn-lg btn-primary" value="Сделать ставку">
+            </form>
+            </div>
+        {% endif %}
+        {% if game.row != 0 and game.row < 4 and not game.bet_ask %}
             <div class="action_block">
             Ход {{ players_db[id_p_now].name }}:
             <form method="POST"> <!--possible responses-->
@@ -169,7 +187,7 @@
                         <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="raise"> raise </div>
                 {% endif %}
                 {% if "call" in players_db[id_p_now].possible_responses%}
-                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="raise"> call </div>
+                        <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="call"> call </div>
                 {% endif %}
                 {% if "check" in players_db[id_p_now].possible_responses%}
                         <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="check"> check </div>
@@ -178,7 +196,8 @@
                 <input class="btn btn-primary" type="submit" value="Сделать ход">
             </form>
         </div>
-        {% elif game.row == 0 %}
+        {% endif %}
+        {% if game.row == 0 %}
             <div class="start_block">
                 <form method="POST">
                     <input type="hidden" name="row" value="1">
@@ -186,7 +205,63 @@
                 </form>
             </div>
         {% endif %}
+
+        {% if game.players.split().index(game.dealer) == 0 %}
+            <div class="dealer_button_1">
+                <img src="static/img/dealer_button.png" width="50px">
+            </div>
+        {% endif %}
+        {% if game.players.split().index(game.dealer) == 1 %}
+            <div class="dealer_button_2">
+                <img src="static/img/dealer_button.png" width="50px">
+            </div>
+        {% endif %}
+        {% if game.players.split().index(game.dealer) == 2 %}
+            <div class="dealer_button_3">
+                <img src="static/img/dealer_button.png" width="50px">
+            </div>
+        {% endif %}
+        {% if game.players.split().index(game.dealer) == 3 %}
+            <div class="dealer_button_4">
+                <img src="static/img/dealer_button.png" width="50px">
+            </div>
+        {% endif %}
+        {% if game.players.split().index(game.dealer) == 4 %}
+            <div class="dealer_button_5">
+                <img src="static/img/dealer_button.png" width="50px">
+            </div>
+        {% endif %}
+        {% if game.players.split().index(game.dealer) == 5 %}
+            <div class="dealer_button_6">
+                <img src="static/img/dealer_button.png" width="50px">
+            </div>
+        {% endif %}
+
+
     </div>
+
+    {% if game.round_ended %}
+        <div class="block_win">
+            <div>
+                <img src="static/img/winner_background.jpg" width="30%">
+            </div>
+        </div>
+        <div  class="win_text">
+            <p>Выиграл {{ game.winners.split()[0] }} <br> + {{game.pot}}</p>
+        </div>
+        <div class="end_button_next">
+            <form method="POST">
+                <input type="hidden" name="row" value="6">
+                <input name="end_button" type="submit" class="btn btn-light btn-lg btn-block" value="Продолжить">
+            </form>
+        </div>
+        <div class="end_button_final">
+            <form method="POST">
+                <input type="hidden" name="row" value="7">
+                <input name="end_button" type="submit" class="btn btn-light btn-lg btn-block" value="Завершить">
+            </form>
+        </div>
+    {% endif %}
 
     <footer class="page-footer font-small mdb-color darken-3 pt-4">
     <div class="col-md-4 d-flex align-items-center">

@@ -24,7 +24,7 @@
     position: relative;
     width: 100%;
     height: 100%;
-    z-index: 100;
+    z-index: 1;
 
 }
 
@@ -130,7 +130,6 @@
     font-size: 1.5vw;
 }
 .block_cards{
-    border: 4px solid darkblue;
     position: absolute;
     left: 5%;
     top: 5%;
@@ -145,36 +144,114 @@
     position: absolute;
     top: 70%;
     width: 90%;
-    border: 4px solid darkblue;
 }
-img {
-    border: 3px solid #00a8e1;
-   }
 .table_block {
-    border: 3px solid #00a8e1;
     position: relative;
     width: 50%;
-    top: -140%;
+    top: -135%;
     left: 50%;
     transform: translatex(-50%) translatey(-50%);
     text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 1.5vw;
 }
 .cards_on_table{
     position: relative;
     display: inline-block;
 }
-.action_block, .start_block{
-    position: relative;
+.action_block, .start_block, .bet_ask_block{
+    position: absolute;
     width: 20%;
-    top: -150%;
-    left: 110%;
+    top: 65%;
+    left: 120%;
     transform: translatex(-50%) translatey(-50%);
     z-index: 3;
     text-align: center;
     font-weight: bold;
     font-size: 1.5vw;
 }
+.dealer_button_1 {
+    position: absolute;
+    top: 15%;
+    left: 35%;
+}
+.dealer_button_2 {
+    position: absolute;
+    top: 15%;
+    left: 75%;
+}
+.dealer_button_3 {
+    position: absolute;
+    top: 35%;
+    left: 85%;
+}
+.dealer_button_4 {
+    position: absolute;
+    top: 73%;
+    left: 62%;
+}
+.dealer_button_5 {
+    position: absolute;
+    top: 73%;
+    left: 22%;
+}
+.dealer_button_6 {
+    position: absolute;
+    top: 27%;
+    left: 10%;
+}
+.block_win {
+    position: absolute;
+    left: 50%;
+    top:80%;
+    background: #fcbf28;
+    transform: translatex(-50%) translatey(-50%);
+    z-index: 2;
 
+    border-radius: 10%;
+
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    border: 10px double lightyellow;
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border: none;
+    }
+}
+.win_text {
+    position: absolute;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 2vw;
+    z-index: 3;
+    left: 50%;
+    top:82%;
+    transform: translatex(-50%) translatey(-50%);
+}
+
+.end_button_next {
+    position: absolute;
+    transform: translatex(-50%) translatey(-50%);
+    left: 66%;
+    top: 80%;
+    z-index: 6;
+}
+
+.end_button_final {
+    position: absolute;
+    transform: translatex(-50%) translatey(-50%);
+    left: 34%;
+    top: 80%;
+    z-index: 6;
+}
 
 #main{
     position: absolute;

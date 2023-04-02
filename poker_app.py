@@ -1,9 +1,14 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
-from player import Player
+from disection import disection
+from find_winner import find_winner
+from hand_scorer import hand_scorer
+from one_row import one_row
 from cards import deck
 from card_to_file_name import to_file_name
+from possible_responses import give_possible_responses
+from row_1 import row_1
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_base.db'
@@ -18,8 +23,6 @@ class WEB_Replies(object):
         self.app_players = []
         self.app_sb = 0
         self.app_chips = 0
-        self.bank = 0
-        self.id_p_now = 0
         self.possible_responses = ["fold", "check", "call", "all-in", "raise"]
 
     def start_info_update_players(self, players):
@@ -37,12 +40,16 @@ class Player_db(db.Model):
     chips = db.Column(db.Integer, nullable=False)
     stake = db.Column(db.Integer, default=0, nullable=False)
     stake_gap = db.Column(db.Integer, default=0, nullable=False)
+    k_wins = db.Column(db.Integer, default=0, nullable=False)
     cards = db.Column(db.String(64), nullable=False)
     int_cards = db.Column(db.String(32), nullable=False)
     fold = db.Column(db.Boolean, default=False, nullable=False)
     all_in = db.Column(db.Boolean, default=False, nullable=False)
+    win = db.Column(db.Boolean, default=False, nullable=False)
+    ready = db.Column(db.Boolean, default=False, nullable=False)
     list_of_special_attributes = db.Column(db.String(128), nullable=False)
     possible_responses = db.Column(db.String(128), nullable=False)
+    score = db.Column(db.String(128), default="", nullable=False)
 
     # game_id = db.Column(db.Integer, db.ForeignKey('game_db.id'), nullable=False)
     # game = db.relationship('Game_db', backref=db.backref('players', lazy=True))
@@ -63,6 +70,15 @@ class Game_db(db.Model):
     highest_stake = db.Column(db.Integer, nullable=False, default=0)
     pot = db.Column(db.Integer, nullable=False, default=0)
     row = db.Column(db.Integer, nullable=False, default=0)
+    id_p_now = db.Column(db.Integer, nullable=False, default=0)
+    count_smth = db.Column(db.Integer, nullable=False, default=0)
+    cards_show_status = db.Column(db.Integer, nullable=False, default=0)
+    n_round = db.Column(db.Integer, nullable=False, default=0)
+    fold_list = db.Column(db.String(512), default=" ", nullable=False)
+    winners = db.Column(db.String(512), default=" ", nullable=False)
+    fold_out = db.Column(db.Boolean, default=False, nullable=False)
+    round_ended = db.Column(db.Boolean, default=False, nullable=False)
+    bet_ask = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
         return '<Game%r>' % self.id, self.start_chips, self.sb, self.players
@@ -170,44 +186,147 @@ def the_game():
     else:
         game_from_db = Game_db.query.first()
         players_db = Player_db.query.order_by(Player_db.id).all()
-        game_from_db.row = request.form['row']
-
-        dealer_num = act.app_players.index(game_from_db.dealer)
         sb_num = act.app_players.index(game_from_db.sb_name)
         bb_num = act.app_players.index(game_from_db.bb_name)
         fa_num = act.app_players.index(game_from_db.fa_name)
 
-        if game_from_db.row == 1:
-            if game_from_db.sb > players_db[sb_num].chips:  # Если нет фишек даже на малый блайнд
-                players_db[sb_num].stake += players_db[sb_num].chips  # Вклад
-                game_from_db.pot += players_db[sb_num].chips  # Банк
-                players_db[sb_num].chips = 0  # Фишки игрока
-                print(f"{players_db[sb_num].name} ставит все что осталось")
-                game_from_db.highest_stake = players_db[sb_num].chips
-                players_db[sb_num].all_in = True
+        # Если игрок хочет что-то поставить
+        if game_from_db.bet_ask:
+            print("bet_ask")
+            bet = int(request.form['bet'])
+            if bet > players_db[game_from_db.id_p_now].chips or bet <= 0 \
+                    or bet < players_db[game_from_db.id_p_now].stake_gap:
+                print("error: неверный ввод")
             else:
-                players_db[sb_num].chips -= game_from_db.sb  # Фишки игрока
-                players_db[sb_num].stake += game_from_db.sb  # Вклад
-                game_from_db.pot += game_from_db.sb  # Банк
-                game_from_db.highest_stake = game_from_db.sb
+                if bet == players_db[game_from_db.id_p_now].chips:
+                    print(f"{players_db[game_from_db.id_p_now].name} ставит всё!")
+                    players_db[game_from_db.id_p_now].all_in = True
+                players_db[game_from_db.id_p_now].stake_gap = 0
+                players_db[game_from_db.id_p_now].stake += bet  # Вклад
+                game_from_db.pot += bet  # Банк
+                players_db[game_from_db.id_p_now].chips -= bet  # Фищки игрока
+                game_from_db.highest_stake = players_db[game_from_db.id_p_now].stake
+                game_from_db.count_smth = 1
+                game_from_db.id_p_now += 1
+                game_from_db.id_p_now %= len(game_from_db.players.split())
+                game_from_db.bet_ask = False
+                give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
 
-            if game_from_db.sb * 2 > players_db[bb_num].chips:
-                players_db[bb_num].stake += players_db[bb_num].chips  # Фишки игрока
-                players_db[bb_num].chips = 0  # Вклад
-                game_from_db.pot += players_db[bb_num].chips  # Банк
-                print(f"{players_db[bb_num].name} ставит все что осталось")
-                game_from_db.highest_stake = players_db[bb_num].chips
-                players_db[bb_num].all_in = True
-            else:
-                players_db[bb_num].chips -= game_from_db.sb * 2  # Фишки игрока
-                players_db[bb_num].stake += game_from_db.sb * 2  # Вклад
-                game_from_db.pot += game_from_db.sb * 2  # Банк
-                game_from_db.highest_stake = game_from_db.sb * 2
+        else:
+            # Круг
+            if int(game_from_db.row) == 2:
+                response = request.form['player_action']
+                print(players_db[game_from_db.id_p_now].name, "играет")
+                one_row(game_from_db, players_db, response)
+                give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
+
+            # Начать
+            if int(game_from_db.row) == 0:
+                print("The Game started")
+                game_from_db.row = request.form['row']
+                row_1(game_from_db, players_db, fa_num, sb_num, bb_num)
+                give_possible_responses(players_db, game_from_db, fa_num)
+
+            # Междукружье
+            if int(game_from_db.row) == 3:
+                game_from_db.cards_show_status += 1
+                if game_from_db.cards_show_status == 4:
+                    print("Counting")
+                    game_from_db.row = 4
+                else:
+                    game_from_db.row -= 1
+                    game_from_db.count_smth = 1
+                    game_from_db.id_p_now = sb_num
+                give_possible_responses(players_db, game_from_db, sb_num)
+
+            # Выбор продолжать или нет
+            if int(game_from_db.row) == 5:
+                game_from_db.row = request.form['row']
+                print("выбор")
+
+            # Следующая игра
+            if int(game_from_db.row) == 6:
+                print("Следующая игра")
+                for player in players_db:
+                    if player.chips <= 0:
+                        db.session.delete(player)
+                        game_from_db.number_of_players -= 1
+                        pl = game_from_db.players.split()
+                        pl.remove(player.name)
+                        game_from_db.players = " ".join(pl)
+                        print(f"{player.name} выходит из игры")
+                if game_from_db.number_of_players == 1:
+                    game_from_db.row = 7
+                    print(f"Остался только: {game_from_db.players.split()[0]}")
+                else:
+                    game_from_db.pot = 0
+                    game_from_db.row = 0
+                    game_from_db.n_round += 1
+                    game_from_db.round_ended = False
+                    game_from_db.cards_show_status = 0
+                    game_from_db.winners = ""
+                    game_from_db.fold_out = False
+                    game_from_db.highest_stake = 0
+
+                    disection(game_from_db, game_from_db.n_round)
+
+                    game_from_db.cards_on_table = ""
+                    game_from_db.int_cards_on_table = ""
+
+                    for i in range(5):
+                        card = deck.pop(0)
+                        strcard = to_file_name(card.value, card.suit)
+                        game_from_db.cards_on_table += strcard + ","
+                        game_from_db.int_cards_on_table += str(card.value) + " " + str(card.suit) + " "
+
+                    for player_name in players_db:
+                        card1 = deck.pop(0)
+                        strcard1 = to_file_name(card1.value, card1.suit)
+                        card2 = deck.pop(0)
+                        strcard2 = to_file_name(card2.value, card2.suit)
+                        player_name.cards_of_players = strcard1 + "," + strcard2
+                        player_name.int_cards_of_players = str(card1.value) + " " + str(card1.suit) + " " + \
+                                               str(card2.value) + " " + str(card2.suit) + " "
+                        player_name.score = ""
+                        player_name.stake = 0
+                        player_name.all_in = False
+                        player_name.fold = False
+                        player_name.win = False
+                        l_of_sa = ""
+                        if player_name == game_from_db.dealer:
+                            l_of_sa = l_of_sa + "dealer "
+                        if player_name == game_from_db.sb_name:
+                            l_of_sa = l_of_sa + "sb "
+                        if player_name == game_from_db.bb_name:
+                            l_of_sa = l_of_sa + "bb "
+                        if player_name == game_from_db.fa_name:
+                            l_of_sa = l_of_sa + "fa "
+                        player_name.l_of_sa = l_of_sa
+
+            # Конец
+            if int(game_from_db.row) == 7:
+                print("Конец")
+                return redirect('/statistics')
+
+            # Подсчет комбинаций
+            if int(game_from_db.row) == 4:
+                hand_scorer(game_from_db, players_db)
+                find_winner(game_from_db, players_db)
+                game_from_db.round_ended = True
+                game_from_db.row = int(game_from_db.row) + 1
+                print("row changed on " + str(game_from_db.row))
 
         db.session.commit()
 
         return render_template("the_game.html", game=game_from_db, players_db=players_db,
-                               id_p_now=fa_num)
+                               id_p_now=game_from_db.id_p_now)
+
+
+@app.route('/statistics')
+def statistics():
+    game_from_db = Game_db.query.first()
+    players_db = Player_db.query.order_by(Player_db.id).all()
+    return render_template("statistics.html", game=game_from_db, players_db=players_db)
 
 
 if __name__ == "__main__":

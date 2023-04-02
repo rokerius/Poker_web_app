@@ -1,1 +1,0 @@
-A = [ffgh, fgggfhfgh, gfgfhgfhghf, gfh]
