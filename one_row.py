@@ -36,6 +36,7 @@ def one_row(game_from_db, players_db, response):
         print(f"{players_db[game_from_db.id_p_now].name} ставит все!")
         players_db[game_from_db.id_p_now].all_in = True
         game_from_db.count_smth = 0
+        game_from_db.all_in = True
 
     if response == "raise":
         print(f"Сколько {players_db[game_from_db.id_p_now].name} ставит? (доступно: "
@@ -46,14 +47,22 @@ def one_row(game_from_db, players_db, response):
         print("*Спрашиваем сколько ставит*")
 
     else:
-        if game_from_db.count_smth == game_from_db.number_of_players - 1:
+        if game_from_db.count_smth == game_from_db.number_of_players:
             game_from_db.row += 1
             print("changed row on " + str(game_from_db.row))
         else:
             game_from_db.count_smth += 1
             game_from_db.id_p_now += 1
             game_from_db.id_p_now %= len(game_from_db.players.split())
+            print("changed id_p_now on " + str(game_from_db.id_p_now))
+            print("changed count_smth on " + str(game_from_db.count_smth))
             while players_db[game_from_db.id_p_now].fold or players_db[game_from_db.id_p_now].all_in:
+                if game_from_db.count_smth == game_from_db.number_of_players:
+                    game_from_db.row += 1
+                    print("changed row on " + str(game_from_db.row))
+                    break
+                game_from_db.count_smth += 1
                 game_from_db.id_p_now += 1
                 game_from_db.id_p_now %= len(game_from_db.players.split())
-            print("changed id_p_now on " + str(game_from_db.id_p_now))
+                print("changed id_p_now on " + str(game_from_db.id_p_now))
+                print("changed count_smth on " + str(game_from_db.count_smth))

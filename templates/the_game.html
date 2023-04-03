@@ -175,7 +175,10 @@
         {% endif %}
         {% if game.row != 0 and game.row < 4 and not game.bet_ask %}
             <div class="action_block">
-            Ход {{ players_db[id_p_now].name }}:
+                <p style="margin-top: 2em; margin-bottom: 0.2em">Ход {{ players_db[id_p_now].name }}</p>
+                {% if players_db[id_p_now].stake_gap != 0%}
+                    <p><small>Докиньте {{ players_db[id_p_now].stake_gap }} чтобы остаться </small></p>
+                {% endif %}
             <form method="POST"> <!--possible responses-->
                 {% if "fold" in players_db[id_p_now].possible_responses%}
                         <div class="form-control"><input class="form-check-input" type="radio" name="player_action" value="fold"> fold </div>

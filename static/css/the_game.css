@@ -163,13 +163,13 @@
 .action_block, .start_block, .bet_ask_block{
     position: absolute;
     width: 20%;
-    top: 65%;
+    top: 70%;
     left: 120%;
     transform: translatex(-50%) translatey(-50%);
     z-index: 3;
     text-align: center;
     font-weight: bold;
-    font-size: 1.5vw;
+    font-size: 1.2vw;
 }
 .dealer_button_1 {
     position: absolute;

@@ -1,5 +1,4 @@
-def row_1(game_from_db, players_db, fa_num, sb_num, bb_num):
-    id_p_now = fa_num
+def row_1(game_from_db, players_db, sb_num, bb_num):
     if game_from_db.sb > players_db[sb_num].chips:  # Если нет фишек даже на малый блайнд
         players_db[sb_num].stake += players_db[sb_num].chips  # Вклад
         game_from_db.pot += players_db[sb_num].chips  # Банк
@@ -31,3 +30,5 @@ def row_1(game_from_db, players_db, fa_num, sb_num, bb_num):
     game_from_db.id_p_now = game_from_db.players.split().index(game_from_db.fa_name)
     game_from_db.count_smth = 1
     game_from_db.row = int(game_from_db.row) + 1
+    print("changed id_p_now on " + str(game_from_db.id_p_now))
+    print("changed count_smth on " + str(game_from_db.count_smth))

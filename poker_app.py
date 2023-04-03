@@ -5,10 +5,10 @@ from disection import disection
 from find_winner import find_winner
 from hand_scorer import hand_scorer
 from one_row import one_row
-from cards import deck
+from cards import deck, StandardDeck
 from card_to_file_name import to_file_name
 from possible_responses import give_possible_responses
-from row_1 import row_1
+from first_row import row_1
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_base.db'
@@ -77,6 +77,7 @@ class Game_db(db.Model):
     fold_list = db.Column(db.String(512), default=" ", nullable=False)
     winners = db.Column(db.String(512), default=" ", nullable=False)
     fold_out = db.Column(db.Boolean, default=False, nullable=False)
+    all_in = db.Column(db.Boolean, default=False, nullable=False)
     round_ended = db.Column(db.Boolean, default=False, nullable=False)
     bet_ask = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -186,9 +187,9 @@ def the_game():
     else:
         game_from_db = Game_db.query.first()
         players_db = Player_db.query.order_by(Player_db.id).all()
-        sb_num = act.app_players.index(game_from_db.sb_name)
-        bb_num = act.app_players.index(game_from_db.bb_name)
-        fa_num = act.app_players.index(game_from_db.fa_name)
+        sb_num = game_from_db.players.split().index(game_from_db.sb_name)
+        bb_num = game_from_db.players.split().index(game_from_db.bb_name)
+        fa_num = game_from_db.players.split().index(game_from_db.fa_name)
 
         # Если игрок хочет что-то поставить
         if game_from_db.bet_ask:
@@ -206,7 +207,7 @@ def the_game():
                 game_from_db.pot += bet  # Банк
                 players_db[game_from_db.id_p_now].chips -= bet  # Фищки игрока
                 game_from_db.highest_stake = players_db[game_from_db.id_p_now].stake
-                game_from_db.count_smth = 1
+                game_from_db.count_smth = 2
                 game_from_db.id_p_now += 1
                 game_from_db.id_p_now %= len(game_from_db.players.split())
                 game_from_db.bet_ask = False
@@ -224,12 +225,15 @@ def the_game():
             if int(game_from_db.row) == 0:
                 print("The Game started")
                 game_from_db.row = request.form['row']
-                row_1(game_from_db, players_db, fa_num, sb_num, bb_num)
+                row_1(game_from_db, players_db, sb_num, bb_num)
                 give_possible_responses(players_db, game_from_db, fa_num)
 
             # Междукружье
             if int(game_from_db.row) == 3:
                 game_from_db.cards_show_status += 1
+                if game_from_db.all_in:
+                    game_from_db.cards_show_status = 4
+                    game_from_db.all_in = False
                 if game_from_db.cards_show_status == 4:
                     print("Counting")
                     game_from_db.row = 4
@@ -237,6 +241,16 @@ def the_game():
                     game_from_db.row -= 1
                     game_from_db.count_smth = 1
                     game_from_db.id_p_now = sb_num
+                    while players_db[game_from_db.id_p_now].fold or players_db[game_from_db.id_p_now].all_in:
+                        if game_from_db.count_smth == game_from_db.number_of_players:
+                            game_from_db.row += 1
+                            print("changed row on " + str(game_from_db.row))
+                            break
+                        game_from_db.count_smth += 1
+                        game_from_db.id_p_now += 1
+                        game_from_db.id_p_now %= len(game_from_db.players.split())
+                        print("changed id_p_now on " + str(game_from_db.id_p_now))
+                        print("changed count_smth on " + str(game_from_db.count_smth))
                 give_possible_responses(players_db, game_from_db, sb_num)
 
             # Выбор продолжать или нет
@@ -273,35 +287,41 @@ def the_game():
                     game_from_db.cards_on_table = ""
                     game_from_db.int_cards_on_table = ""
 
+                    # Обновляем колоду.0
+
+                    deck = StandardDeck()
+                    print(deck)
+
                     for i in range(5):
                         card = deck.pop(0)
                         strcard = to_file_name(card.value, card.suit)
                         game_from_db.cards_on_table += strcard + ","
                         game_from_db.int_cards_on_table += str(card.value) + " " + str(card.suit) + " "
 
-                    for player_name in players_db:
+                    for player in players_db:
                         card1 = deck.pop(0)
                         strcard1 = to_file_name(card1.value, card1.suit)
                         card2 = deck.pop(0)
                         strcard2 = to_file_name(card2.value, card2.suit)
-                        player_name.cards_of_players = strcard1 + "," + strcard2
-                        player_name.int_cards_of_players = str(card1.value) + " " + str(card1.suit) + " " + \
+                        player.cards = strcard1 + "," + strcard2
+                        player.int_cards_of_players = str(card1.value) + " " + str(card1.suit) + " " + \
                                                str(card2.value) + " " + str(card2.suit) + " "
-                        player_name.score = ""
-                        player_name.stake = 0
-                        player_name.all_in = False
-                        player_name.fold = False
-                        player_name.win = False
+                        print("upgrade cards of player", player.name, player.cards)
+                        player.score = ""
+                        player.stake = 0
+                        player.all_in = False
+                        player.fold = False
+                        player.win = False
                         l_of_sa = ""
-                        if player_name == game_from_db.dealer:
+                        if player == game_from_db.dealer:
                             l_of_sa = l_of_sa + "dealer "
-                        if player_name == game_from_db.sb_name:
+                        if player == game_from_db.sb_name:
                             l_of_sa = l_of_sa + "sb "
-                        if player_name == game_from_db.bb_name:
+                        if player == game_from_db.bb_name:
                             l_of_sa = l_of_sa + "bb "
-                        if player_name == game_from_db.fa_name:
+                        if player == game_from_db.fa_name:
                             l_of_sa = l_of_sa + "fa "
-                        player_name.l_of_sa = l_of_sa
+                        player.l_of_sa = l_of_sa
 
             # Конец
             if int(game_from_db.row) == 7:

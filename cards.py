@@ -55,6 +55,7 @@ class StandardDeck(list):
         for i in values:
             for j in suits:
                 self.append(Card(i, j))  # ЗАполняем колоду картами
+        random.shuffle(self)
 
     def __repr__(self):
         return f"Колода карт: \n{len(self)} осталось"
