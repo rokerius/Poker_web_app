@@ -1,10 +1,14 @@
 
 .statistics_block {
-    padding: 40px;
+    padding: 10px;
     width: 35%;
     font-weight: bold;
     font-size: 20px;
 
     display: inline-block
+}
+
+.game_stat_block {
+    border: solid;
 }
 

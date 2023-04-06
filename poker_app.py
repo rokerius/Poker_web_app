@@ -19,11 +19,9 @@ db = SQLAlchemy(app)
 
 class WEB_Replies(object):
     def __init__(self):
-        self.answer = None
         self.app_players = []
         self.app_sb = 0
         self.app_chips = 0
-        self.possible_responses = ["fold", "check", "call", "all-in", "raise"]
 
     def start_info_update_players(self, players):
         for i in range(len(players.split())):
@@ -36,6 +34,7 @@ class WEB_Replies(object):
 
 class Player_db(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(32), nullable=False)
     chips = db.Column(db.Integer, nullable=False)
     stake = db.Column(db.Integer, default=0, nullable=False)
@@ -127,9 +126,6 @@ def players():
         address_assignment %= len(players_str.split())
         fa_name = str(act.app_players[address_assignment])
 
-        Game_db.query.filter(Game_db.id != -1).delete()
-        Player_db.query.filter(Player_db.id != -1).delete()
-
         cards_on_table = ""
         int_cards_on_table = ""
         for i in range(5):
@@ -164,10 +160,11 @@ def players():
                 l_of_sa = l_of_sa + "bb "
             if player_name == game.fa_name:
                 l_of_sa = l_of_sa + "fa "
-            player = Player_db(name=player_name, chips=act.app_chips, cards=cards_of_players,
+            player = Player_db(game_id=game.id,
+                               name=player_name, chips=act.app_chips, cards=cards_of_players,
                                int_cards=int_cards_of_players,
                                list_of_special_attributes=l_of_sa,
-                               possible_responses=" ".join(act.possible_responses))
+                               possible_responses=" ")
             db.session.add(player)
             db.session.commit()
 
@@ -180,13 +177,15 @@ def players():
 @app.route('/the_game', methods=['POST', 'GET'])
 def the_game():
     if request.method == "GET":
-        game_from_db = Game_db.query.first()
-        players_db = Player_db.query.order_by(Player_db.id).all()
+        game_from_db = Game_db.query.order_by(-Game_db.id).first()
+        print(game_from_db.id)
+        players_db = Player_db.query.filter(Player_db.game_id == game_from_db.id).order_by(Player_db.id).all()
+
         return render_template("the_game.html", game=game_from_db, players_db=players_db,
                                id_p_now=act.app_players.index(game_from_db.fa_name))
     else:
-        game_from_db = Game_db.query.first()
-        players_db = Player_db.query.order_by(Player_db.id).all()
+        game_from_db = Game_db.query.order_by(-Game_db.id).first()
+        players_db = Player_db.query.filter(Player_db.game_id == game_from_db.id).order_by(Player_db.id).all()
         sb_num = game_from_db.players.split().index(game_from_db.sb_name)
         bb_num = game_from_db.players.split().index(game_from_db.bb_name)
         fa_num = game_from_db.players.split().index(game_from_db.fa_name)
@@ -344,9 +343,19 @@ def the_game():
 
 @app.route('/statistics')
 def statistics():
-    game_from_db = Game_db.query.first()
+    games_from_db = Game_db.query.all()
     players_db = Player_db.query.order_by(Player_db.id).all()
-    return render_template("statistics.html", game=game_from_db, players_db=players_db)
+    all_game_statistic = []  # ID, фишки, малый блайнд, далее - id игроков
+    for game in games_from_db:
+        game_stat = [game.id, game.start_chips, game.sb]
+        players_stat = Player_db.query.filter(Player_db.game_id == game.id).order_by(Player_db.id).all()
+        for player in players_stat:
+            game_stat.append(player.id)
+        all_game_statistic.append(game_stat)
+        print(all_game_statistic)
+
+    return render_template("statistics.html", games=games_from_db, players_db=players_db,
+                           all_game_statistic=all_game_statistic)
 
 
 if __name__ == "__main__":

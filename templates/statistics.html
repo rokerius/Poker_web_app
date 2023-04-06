@@ -21,33 +21,39 @@
       </ul>
         <div class="col-md-3 text-end"></div>
     </header>
+    {% for game in all_game_statistic|reverse %}
 
-    <h2>Начальные фишки: {{ game.start_chips }}</h2>
-    <h2>Малый блайнд: {{ game.sb }}</h2>
+    <div class="game_stat_block">
+        <h2>ID: {{ game[0] }} </h2>
+        <h3>Начальные фишки: {{ game[1] }}</h3>
+        <h3>Малый блайнд: {{ game[2] }}</h3>
 
-    <div class="all_statistics">
-    {% for i in range(game.number_of_players) %}
-        <div class="statistics_block">
-            <table class="table">
-                <tr>
-                    <th> {{ players_db[i].name }} </th>
-                </tr>
-                <tr>
-                    <td>Фишки</td>
-                    <td> {{ players_db[i].chips }} </td>
-                </tr>
-                <tr>
-                    <td>Выиграно</td>
-                    <td> {{ players_db[i].chips - game.start_chips }} </td>
-                </tr>
-                <tr>
-                    <td>Побед</td>
-                    <td> {{ players_db[i].k_wins }} </td>
-                </tr>
-            </table>
-        </div>
+        <div class="all_statistics">
+        {% for i in range(3, game|length) %}
+            <div class="statistics_block">
+                <table class="table">
+                    <tr>
+                        <th> {{ players_db[game[i] - 1].name }} </th>
+                    </tr>
+                    <tr>
+                        <td>Фишки</td>
+                        <td> {{ players_db[game[i] - 1].chips }} </td>
+                    </tr>
+                    <tr>
+                        <td>Выиграно</td>
+                        <td> {{ players_db[game[i] - 1].chips - game[1] }} </td>
+                    </tr>
+                    <tr>
+                        <td>Побед</td>
+                        <td> {{ players_db[game[i] - 1].k_wins }} </td>
+                    </tr>
+                </table>
+            </div>
     {% endfor %}
+        </div>
     </div>
+
+    {% endfor %}
 
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
     <div class="col-md-4 d-flex align-items-center">
