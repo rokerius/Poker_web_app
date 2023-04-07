@@ -1,4 +1,9 @@
-def row_1(game_from_db, players_db, sb_num, bb_num):
+from bot_move import bot_move
+from one_row import one_row
+from possible_responses import give_possible_responses
+
+
+def first_row(game_from_db, players_db, sb_num, bb_num):
     if game_from_db.sb > players_db[sb_num].chips:  # Если нет фишек даже на малый блайнд
         players_db[sb_num].stake += players_db[sb_num].chips  # Вклад
         game_from_db.pot += players_db[sb_num].chips  # Банк
@@ -32,3 +37,13 @@ def row_1(game_from_db, players_db, sb_num, bb_num):
     game_from_db.row = int(game_from_db.row) + 1
     print("changed id_p_now on " + str(game_from_db.id_p_now))
     print("changed count_smth on " + str(game_from_db.count_smth))
+    if players_db[game_from_db.id_p_now].bot:
+        print("ХОДИТ БОТ")
+
+        bot = players_db[game_from_db.id_p_now]
+        give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
+
+        response = bot_move(game_from_db, bot)
+        print("Ход Бота: " + response)
+
+        one_row(game_from_db, players_db, response)

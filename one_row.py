@@ -1,3 +1,7 @@
+from bot_move import bot_move
+from possible_responses import give_possible_responses
+
+
 def one_row(game_from_db, players_db, response):
     players_db[game_from_db.id_p_now].stake_gap = game_from_db.highest_stake - players_db[
         game_from_db.id_p_now].stake
@@ -56,13 +60,37 @@ def one_row(game_from_db, players_db, response):
             game_from_db.id_p_now %= len(game_from_db.players.split())
             print("changed id_p_now on " + str(game_from_db.id_p_now))
             print("changed count_smth on " + str(game_from_db.count_smth))
-            while players_db[game_from_db.id_p_now].fold or players_db[game_from_db.id_p_now].all_in:
-                if game_from_db.count_smth == game_from_db.number_of_players:
-                    game_from_db.row += 1
-                    print("changed row on " + str(game_from_db.row))
-                    break
-                game_from_db.count_smth += 1
-                game_from_db.id_p_now += 1
-                game_from_db.id_p_now %= len(game_from_db.players.split())
-                print("changed id_p_now on " + str(game_from_db.id_p_now))
-                print("changed count_smth on " + str(game_from_db.count_smth))
+
+            if players_db[game_from_db.id_p_now].bot:
+                print("ХОДИТ БОТ")
+
+                bot = players_db[game_from_db.id_p_now]
+                give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
+
+                response = bot_move(game_from_db, bot)
+                print("Ход Бота: " + response)
+
+                one_row(game_from_db, players_db, response)
+
+            else:
+                while players_db[game_from_db.id_p_now].fold or players_db[game_from_db.id_p_now].all_in:
+                    if game_from_db.count_smth == game_from_db.number_of_players:
+                        game_from_db.row += 1
+                        print("changed row on " + str(game_from_db.row))
+                        break
+                    game_from_db.count_smth += 1
+                    game_from_db.id_p_now += 1
+                    game_from_db.id_p_now %= len(game_from_db.players.split())
+                    print("changed id_p_now on " + str(game_from_db.id_p_now))
+                    print("changed count_smth on " + str(game_from_db.count_smth))
+
+                    if players_db[game_from_db.id_p_now].bot:
+                        print("ХОДИТ БОТ")
+
+                        bot = players_db[game_from_db.id_p_now]
+                        give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
+
+                        response = bot_move(game_from_db, bot)
+                        print("Ход Бота: " + response)
+
+                        one_row(game_from_db, players_db, response)

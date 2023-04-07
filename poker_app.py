@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
+from bot_move import bot_move
 from disection import disection
 from find_winner import find_winner
 from hand_scorer import hand_scorer
@@ -8,7 +9,7 @@ from one_row import one_row
 from cards import deck, StandardDeck
 from card_to_file_name import to_file_name
 from possible_responses import give_possible_responses
-from first_row import row_1
+from first_row import first_row
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_base.db'
@@ -35,6 +36,7 @@ class WEB_Replies(object):
 class Player_db(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, nullable=False)
+    bot = db.Column(db.Boolean, default=False, nullable=False)
     name = db.Column(db.String(32), nullable=False)
     chips = db.Column(db.Integer, nullable=False)
     stake = db.Column(db.Integer, default=0, nullable=False)
@@ -160,7 +162,10 @@ def players():
                 l_of_sa = l_of_sa + "bb "
             if player_name == game.fa_name:
                 l_of_sa = l_of_sa + "fa "
-            player = Player_db(game_id=game.id,
+
+            bot = "_BOT_" in player_name
+
+            player = Player_db(game_id=game.id, bot=bot,
                                name=player_name, chips=act.app_chips, cards=cards_of_players,
                                int_cards=int_cards_of_players,
                                list_of_special_attributes=l_of_sa,
@@ -168,7 +173,6 @@ def players():
             db.session.add(player)
             db.session.commit()
 
-        print("edited")
         return redirect('/the_game')
     else:
         return render_template("players_page.html")
@@ -224,8 +228,8 @@ def the_game():
             if int(game_from_db.row) == 0:
                 print("The Game started")
                 game_from_db.row = request.form['row']
-                row_1(game_from_db, players_db, sb_num, bb_num)
-                give_possible_responses(players_db, game_from_db, fa_num)
+                first_row(game_from_db, players_db, sb_num, bb_num)
+                give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
 
             # Междукружье
             if int(game_from_db.row) == 3:
@@ -250,12 +254,22 @@ def the_game():
                         game_from_db.id_p_now %= len(game_from_db.players.split())
                         print("changed id_p_now on " + str(game_from_db.id_p_now))
                         print("changed count_smth on " + str(game_from_db.count_smth))
-                give_possible_responses(players_db, game_from_db, sb_num)
+
+                        if players_db[game_from_db.id_p_now].bot:
+                            print("ХОДИТ БОТ")
+
+                            bot = players_db[game_from_db.id_p_now]
+                            give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
+
+                            response = bot_move(game_from_db, bot)
+                            print("Ход Бота: " + response)
+
+                            one_row(game_from_db, players_db, response)
+                give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
 
             # Выбор продолжать или нет
             if int(game_from_db.row) == 5:
                 game_from_db.row = request.form['row']
-                print("выбор")
 
             # Следующая игра
             if int(game_from_db.row) == 6:
