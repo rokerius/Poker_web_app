@@ -1,14 +1,25 @@
 
 .statistics_block {
     padding: 10px;
-    width: 35%;
+    width: 30%;
     font-weight: bold;
     font-size: 20px;
 
-    display: inline-block
+    display: inline-block;
 }
 
 .game_stat_block {
     border: solid;
+}
+
+.all_statistics {
+    width: 60%;
+    display: inline-block;
+}
+
+.diagram_stat {
+    width: 20%;
+    border: solid;
+    display: inline-block;
 }
 
