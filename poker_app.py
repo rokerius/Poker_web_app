@@ -39,6 +39,7 @@ class Player_db(db.Model):
     bot = db.Column(db.Boolean, default=False, nullable=False)
     name = db.Column(db.String(32), nullable=False)
     chips = db.Column(db.Integer, nullable=False)
+    stake_info = db.Column(db.String(32), default="", nullable=False)
     stake = db.Column(db.Integer, default=0, nullable=False)
     stake_gap = db.Column(db.Integer, default=0, nullable=False)
     k_wins = db.Column(db.Integer, default=0, nullable=False)
@@ -192,7 +193,6 @@ def the_game():
         players_db = Player_db.query.filter(Player_db.game_id == game_from_db.id).order_by(Player_db.id).all()
         sb_num = game_from_db.players.split().index(game_from_db.sb_name)
         bb_num = game_from_db.players.split().index(game_from_db.bb_name)
-        fa_num = game_from_db.players.split().index(game_from_db.fa_name)
 
         # Если игрок хочет что-то поставить
         if game_from_db.bet_ask:
@@ -206,6 +206,12 @@ def the_game():
                     print(f"{players_db[game_from_db.id_p_now].name} ставит всё!")
                     players_db[game_from_db.id_p_now].all_in = True
                 players_db[game_from_db.id_p_now].stake_gap = 0
+                if players_db[game_from_db.id_p_now].stake_info == "" or \
+                        players_db[game_from_db.id_p_now].stake_info == "CHECK":
+                    players_db[game_from_db.id_p_now].stake_info = "RAISE " + str(bet)
+                else:
+                    players_db[game_from_db.id_p_now].stake_info = "RAISE " + str(bet +
+                                                        int(players_db[game_from_db.id_p_now].stake_info.split()[-1]))
                 players_db[game_from_db.id_p_now].stake += bet  # Вклад
                 game_from_db.pot += bet  # Банк
                 players_db[game_from_db.id_p_now].chips -= bet  # Фищки игрока
@@ -229,6 +235,8 @@ def the_game():
                 print("The Game started")
                 game_from_db.row = request.form['row']
                 first_row(game_from_db, players_db, sb_num, bb_num)
+                players_db[sb_num].stake_info = "SB " + str(players_db[sb_num].stake)
+                players_db[bb_num].stake_info = "BB " + str(players_db[bb_num].stake)
                 give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
 
             # Междукружье
@@ -292,6 +300,7 @@ def the_game():
                     game_from_db.round_ended = False
                     game_from_db.cards_show_status = 0
                     game_from_db.winners = ""
+                    game_from_db.fold_list = ""
                     game_from_db.fold_out = False
                     game_from_db.highest_stake = 0
 
@@ -321,6 +330,7 @@ def the_game():
                                                str(card2.value) + " " + str(card2.suit) + " "
                         print("upgrade cards of player", player.name, player.cards)
                         player.score = ""
+                        player.stake_info = ""
                         player.stake = 0
                         player.all_in = False
                         player.fold = False

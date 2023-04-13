@@ -1,9 +1,15 @@
+body {
+    background-image:  url("/static/img/background_2.jpg");
+}
+
+
 
 .square-box {
      position: relative;
      width: 85%;
      height: 85%;
      background: darkgreen;
+     background-image: url("/static/img/sukno_2_1.jpg");
 
      left: 0;
      right: 0;
@@ -79,36 +85,42 @@
 }
 .cards .cards_player-1 {
     position: absolute;
+    z-index: 1;
     top: -25%;
     left: 15%;
     transform: translatex(-50%) translatey(-50%);
 }
 .cards .cards_player-2 {
     position: absolute;
+    z-index: 1;
     top: -25%;
     left: 55%;
     transform: translatex(-50%) translatey(-50%);
 }
 .cards .cards_player-3 {
     position: absolute;
+    z-index: 1;
     top: 10%;
     left: 107%;
     transform: translatex(-50%) translatey(-50%);
 }
 .cards .cards_player-4 {
     position: absolute;
+    z-index: 1;
     top: 118%;
     left: 85%;
     transform: translatex(-50%) translatey(-50%);
 }
 .cards .cards_player-5 {
     position: absolute;
+    z-index: 1;
     top: 118%;
     left: 45%;
     transform: translatex(-50%) translatey(-50%);
 }
 .cards .cards_player-6 {
     position: absolute;
+    z-index: 1;
     top: 80%;
     left: -7%;
     transform: translatex(-50%) translatey(-50%);
@@ -142,7 +154,16 @@
 }
 .chips{
     position: absolute;
-    top: 70%;
+    top: 65%;
+    width: 90%;
+}
+.stake_info {
+     text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 1vw;
+    position: absolute;
+    top: 83%;
     width: 90%;
 }
 .table_block {
@@ -204,8 +225,8 @@
 .block_win {
     position: absolute;
     left: 50%;
-    top:80%;
-    background: #fcbf28;
+    top:78%;
+    background: rgba(252, 191, 40, 0.9);
     transform: translatex(-50%) translatey(-50%);
     z-index: 2;
 
@@ -217,7 +238,7 @@
 
     border: 10px double lightyellow;
 
-    img {
+    .win_img {
         max-width: 100%;
         height: auto;
         display: block;
@@ -233,7 +254,7 @@
     font-size: 2vw;
     z-index: 3;
     left: 50%;
-    top:82%;
+    top:80%;
     transform: translatex(-50%) translatey(-50%);
 }
 
@@ -241,7 +262,7 @@
     position: absolute;
     transform: translatex(-50%) translatey(-50%);
     left: 66%;
-    top: 80%;
+    top: 78%;
     z-index: 6;
 }
 
@@ -249,7 +270,7 @@
     position: absolute;
     transform: translatex(-50%) translatey(-50%);
     left: 34%;
-    top: 80%;
+    top: 78%;
     z-index: 6;
 }
 

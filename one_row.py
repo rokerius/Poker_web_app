@@ -6,8 +6,14 @@ def one_row(game_from_db, players_db, response):
     players_db[game_from_db.id_p_now].stake_gap = game_from_db.highest_stake - players_db[
         game_from_db.id_p_now].stake
 
+    if response == "check" or players_db[game_from_db.id_p_now].all_in or \
+            players_db[game_from_db.id_p_now].fold or game_from_db.fold_out:
+        players_db[game_from_db.id_p_now].stake_info = "CHECK"
+        print(players_db[game_from_db.id_p_now].name + " check")
+
     if response == "fold":
         print(players_db[game_from_db.id_p_now].name + " fold")
+        players_db[game_from_db.id_p_now].stake_info = "FOLD"
         players_db[game_from_db.id_p_now].fold = True
         game_from_db.fold_list += players_db[game_from_db.id_p_now].name + " "
         if len(game_from_db.fold_list.split()) == (len(game_from_db.players.split()) - 1):
@@ -22,16 +28,24 @@ def one_row(game_from_db, players_db, response):
 
     if response == "call":
         print(players_db[game_from_db.id_p_now].name + " call")
+        if players_db[game_from_db.id_p_now].stake_info == "" or players_db[game_from_db.id_p_now].stake_info == "CHECK":
+            players_db[game_from_db.id_p_now].stake_info = "CALL " + str(players_db[game_from_db.id_p_now].stake_gap)
+        else:
+            players_db[game_from_db.id_p_now].stake_info = "CALL " + \
+                                                    str(players_db[game_from_db.id_p_now].stake_gap +
+                                                        int(players_db[game_from_db.id_p_now].stake_info.split()[-1]))
         players_db[game_from_db.id_p_now].stake += players_db[game_from_db.id_p_now].stake_gap
         game_from_db.pot += players_db[game_from_db.id_p_now].stake_gap
         players_db[game_from_db.id_p_now].chips -= players_db[game_from_db.id_p_now].stake_gap
         players_db[game_from_db.id_p_now].stake_gap = 0
 
-    if response == "check" or players_db[game_from_db.id_p_now].all_in or \
-            players_db[game_from_db.id_p_now].fold or game_from_db.fold_out:
-        print(players_db[game_from_db.id_p_now].name + " check")
-
     if response == "all-in":
+        if players_db[game_from_db.id_p_now].stake_info == "" or players_db[game_from_db.id_p_now].stake_info == "CHECK":
+            players_db[game_from_db.id_p_now].stake_info = "ALL-IN " + str(players_db[game_from_db.id_p_now].chips)
+        else:
+            players_db[game_from_db.id_p_now].stake_info = "ALL-IN " + \
+                                                    str(players_db[game_from_db.id_p_now].chips +
+                                                        int(players_db[game_from_db.id_p_now].stake_info.split()[-1]))
         players_db[game_from_db.id_p_now].stake += players_db[game_from_db.id_p_now].chips
         game_from_db.pot += players_db[game_from_db.id_p_now].chips
         game_from_db.highest_stake = players_db[game_from_db.id_p_now].stake
@@ -54,6 +68,9 @@ def one_row(game_from_db, players_db, response):
         if game_from_db.count_smth == game_from_db.number_of_players:
             game_from_db.row += 1
             print("changed row on " + str(game_from_db.row))
+            for player in players_db:
+                if player.stake_info != "FOLD":
+                    player.stake_info = ""
         else:
             game_from_db.count_smth += 1
             game_from_db.id_p_now += 1
@@ -77,6 +94,9 @@ def one_row(game_from_db, players_db, response):
                     if game_from_db.count_smth == game_from_db.number_of_players:
                         game_from_db.row += 1
                         print("changed row on " + str(game_from_db.row))
+                        for player in players_db:
+                            if player.stake_info != "FOLD":
+                                player.stake_info = ""
                         break
                     game_from_db.count_smth += 1
                     game_from_db.id_p_now += 1
