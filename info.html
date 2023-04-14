@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Информация
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-5 fw-bold text-center ch-1 mb-3">Poker Simulator</h1>
+</div>
+<div class="container">
+     <p class="lead text-center">
+         Именно симулятор, потому что с к этому приложению
+         можно подключать ботов и наблюдать за их результатами.
+     </p>
+</div>
+
+<div class="container">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="/static/img/home_demo.png" class="d-block mx-lg-auto img-fluid"
+                 width="550" loading="lazy" alt="home_demo">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Старт</h1>
+            <p class="lead">
+                На начальной странице вы можете выбрать количество фишек и малый блайнд.
+                Далее вы выбираете колличество игроков и их имена.
+                Может быть от двух до шести игроков.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="/static/img/players_demo.png" class="d-block mx-lg-auto img-fluid"
+                 width="520" loading="lazy" alt="home_demo">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Добавьте ботов</h1>
+            <p class="lead">
+                Добавив <b>_BOT_</b> в имя игрока, вместо него будет играть ваш алгоритм.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

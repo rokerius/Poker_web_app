@@ -382,6 +382,11 @@ def statistics():
                            all_game_statistic=all_game_statistic)
 
 
+@app.route('/about')
+def info():
+    return render_template("info.html")
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
