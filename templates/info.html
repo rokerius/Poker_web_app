@@ -63,13 +63,12 @@
     </div>
 </div>
 
-<div class="pb-5 d-flex justify-content-around container">
+<div class="mb-5 pb-5 d-flex justify-content-around container">
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Блок игрока</h5>
         </div>
         <img class="card-img-bottom" src="/static/img/avatar_demo.jpg" height="250px" alt="Card image cap">
-
     </div>
     <div class="card">
         <div class="card-body">
@@ -85,10 +84,92 @@
     </div>
 </div>
 
+<div class="pt-5 container">
+    <h2 class="fw-bold text-center ch-1 mb-5">А где вы можете это использовать?</h2>
+</div>
+<div class="pb-5 w-25 container">
+    <div class="list-group">
+    <a href="/home" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Обычная игра покер от двух до шести человек</h5>
+        </div>
+        <p class="mb-1">
+            Приложение подходит для обычной игры в Техасском Холдем
+        </p>
+    </a>
+    <a href="/home" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Соревнования Ботов</h5>
+        </div>
+        <p class="mb-1">
+            Вы можете поставить ботов против других ботов. Для этого добавьте в их имена
+            <b>_BOT1_</b> и <b>_BOT2_</b> а также их алгоритмы
+            в соответсвующие функции в файле <em>bot_move.py</em>)
+        </p>
+    </a>
+    <a href="/home" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Тестирование своего бота</h5>
+        </div>
+        <p class="mb-1">Можете добавить только одного своего бота и проверять его работоспособность</p>
+    </a>
+    </div>
+</div>
+
+<div class="mt-5 container">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="/static/img/files_demo.jpg" class="d-block mx-lg-auto img-fluid"
+                  loading="lazy" alt="home_demo">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">А куда мне писать свой алгоритм?</h1>
+            <p class="lead">
+                В файле <b>bot_move.py</b> есть две функции <b>bot_move_1</b> и <b>bot_move_2</b>.
+                В них вам даются данные игрока (<b>bot</b>) и информация об игре (<b>game</b>).
+                Используйте ее, чтобы выбрать как действовать
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="container ">
+    <h2 class="lead fw-bold">Пример такого алгоритма:</h2>
+    <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">bot_move_1</span>(game, bot):
+    <span style="color: #008800; font-weight: bold">print</span>(<span style="background-color: #fff0f0">&#39;Привет, я Бот №1&#39;</span>)
+    bot<span style="color: #333333">.</span>stake_gap <span style="color: #333333">=</span> game[<span style="background-color: #fff0f0">&#39;highest_stake&#39;</span>] <span style="color: #333333">-</span> bot<span style="color: #333333">.</span>stake
+
+    <span style="color: #008800; font-weight: bold">if</span> bot<span style="color: #333333">.</span>stake_gap <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>:
+        <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&quot;check&quot;</span>
+    <span style="color: #008800; font-weight: bold">else</span>:
+        <span style="color: #008800; font-weight: bold">if</span> bot<span style="color: #333333">.</span>chips <span style="color: #333333">&gt;=</span> bot<span style="color: #333333">.</span>stake_gap:
+            <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&quot;call&quot;</span>
+        <span style="color: #008800; font-weight: bold">else</span>:
+            <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&quot;fold&quot;</span>
+
+
+<span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">bot_move_2</span>(game, bot):
+    <span style="color: #008800; font-weight: bold">print</span>(<span style="background-color: #fff0f0">&#39;Привет, я Бот №2&#39;</span>)
+    bot<span style="color: #333333">.</span>stake_gap <span style="color: #333333">=</span> game[<span style="background-color: #fff0f0">&#39;highest_stake&#39;</span>] <span style="color: #333333">-</span> bot<span style="color: #333333">.</span>stake
+
+    <span style="color: #008800; font-weight: bold">if</span> bot<span style="color: #333333">.</span>stake_gap <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>:
+        bet <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;raise 100&quot;</span>
+        <span style="color: #008800; font-weight: bold">return</span> bet
+    <span style="color: #008800; font-weight: bold">else</span>:
+        <span style="color: #008800; font-weight: bold">if</span> bot<span style="color: #333333">.</span>chips <span style="color: #333333">&gt;=</span> bot<span style="color: #333333">.</span>stake_gap:
+            <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&quot;call&quot;</span>
+        <span style="color: #008800; font-weight: bold">else</span>:
+            <span style="color: #008800; font-weight: bold">return</span> <span style="background-color: #fff0f0">&quot;fold&quot;</span>
+</pre></div>
+</div>
+
 <div class="pb-2 pt-5 d-flex justify-content-around container">
     <a href="/"><button type="button" class="btn btn-primary btn-lg btn-block">Можете начать прямо сейчас!</button></a>
 </div>
-<p class="lead text-center text-black-50">А далее про процесс разработки...</p>
+<a href="/dev_info" class="" style="text-decoration: none">
+    <p class="lead text-center text-black-50"> Далее про процесс разработки... </p>
+</a>
 
 
 

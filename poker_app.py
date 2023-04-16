@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
-from bot_move import bot_move
+from bot_move import bot_move_1, bot_move_2
 from disection import disection
 from find_winner import find_winner
+from game_info import give_game_info
 from hand_scorer import hand_scorer
 from one_row import one_row
 from cards import deck, StandardDeck
@@ -36,7 +37,7 @@ class WEB_Replies(object):
 class Player_db(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, nullable=False)
-    bot = db.Column(db.Boolean, default=False, nullable=False)
+    bot = db.Column(db.Integer, default=0, nullable=False)
     name = db.Column(db.String(32), nullable=False)
     chips = db.Column(db.Integer, nullable=False)
     stake_info = db.Column(db.String(32), default="", nullable=False)
@@ -164,7 +165,11 @@ def players():
             if player_name == game.fa_name:
                 l_of_sa = l_of_sa + "fa "
 
-            bot = "_BOT_" in player_name
+            bot = 0
+            if "_BOT_" in player_name or "_BOT1_" in player_name:
+                bot = 1
+            if "_BOT2_" in player_name:
+                bot = 2
 
             player = Player_db(game_id=game.id, bot=bot,
                                name=player_name, chips=act.app_chips, cards=cards_of_players,
@@ -263,14 +268,18 @@ def the_game():
                         print("changed id_p_now on " + str(game_from_db.id_p_now))
                         print("changed count_smth on " + str(game_from_db.count_smth))
 
-                        if players_db[game_from_db.id_p_now].bot:
+                        if players_db[game_from_db.id_p_now].bot > 0:
                             print("ХОДИТ БОТ")
 
                             bot = players_db[game_from_db.id_p_now]
+                            game = give_game_info(game_from_db)
                             give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
-
-                            response = bot_move(game_from_db, bot)
-                            print("Ход Бота: " + response)
+                            if players_db[game_from_db.id_p_now].bot == 1:
+                                response = bot_move_1(game, bot)
+                                print("Ход Бота: " + response)
+                            else:
+                                response = bot_move_2(game, bot)
+                                print("Ход Бота: " + response)
 
                             one_row(game_from_db, players_db, response)
                 give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
@@ -385,6 +394,11 @@ def statistics():
 @app.route('/about')
 def info():
     return render_template("info.html")
+
+
+@app.route('/dev_info')
+def dev_info():
+    return render_template("dev_info.html")
 
 
 if __name__ == "__main__":

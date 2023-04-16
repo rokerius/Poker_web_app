@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Процесс разработки
+{% endblock %}
+
+{% block body %}
+<div class="mb-5 mt-5 container">
+    <p class="h2">1. Игра в консоли на Python</p>
+    <p class="lead">
+        В начале была написана игра, в которую можно было играть только в консоли,
+    это заняло очень много времени и усилий, но в дальнейшем это очень помогло при переносе всего этого в веб-приложение.
+    Хоть в итоге понадобились только фрагменты этого кода и некоторые идеи.
+    </p>
+</div>
+<div class="mb-5 container">
+    <p class="h2">2. Попытка сделать из этого приложение, используя TKinter</p>
+    <p class="lead">
+        Очень хотелось сделать из этого что-то более красивое, я решил использовать для этого TKinter.
+        Я уже сделал некоторую часть, когда понял, что в итоге получится не так замечательно как планировалось.
+        Эта идея сошла на нет.
+    </p>
+</div>
+<div class="mb-5 container">
+    <p class="h2">3. Использование Flask для создания веб-приложения</p>
+    <p class="lead">
+        <a href="https://flask.palletsprojects.com/en/2.2.x/">Flask</a> — фреймворк для создания веб-приложений на языке программирования Python,
+        использующий набор инструментов Werkzeug, а также шаблонизатор Jinja2.
+    </p>
+    <img class="rounded mx-auto d-block" src="static/img/flask.png" width="300px">
+</div>
+
+<div class="mb-5 container">
+    <p class="h2">4. Flask-SQLAlchemy для создания и работы с базой данных</p>
+    <p class="lead">
+        <a href="https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/">Flask-SQLAlchemy</a> —
+        это расширение для фреймворка Flask, добавляющее поддержку SQLAlchemy в приложение.
+        Модуль расширения направлен на упрощение использования пакет SQLAlchemy с Flask,
+        предоставляя полезные значения по умолчанию и дополнительные помощники,
+        облегчающие выполнение общих задач.
+    </p>
+    <div class="m-5 container">
+        <p class="lead">
+            База данных состоит из двух таблиц: игр и игроков.
+        </p>
+        <div>
+            <div style="float: left;">
+            <img class="rounded mx-auto d-block" src="static/img/sqlAlchemy.jpg" width="400px" >
+            <img class="rounded mx-auto d-block" src="static/img/players_db_demo.jpg">
+            </div>
+            <img class="rounded mx-auto d-block" src="static/img/game_db_demo.jpg">
+        </div>
+
+    </div>
+</div>
+
+<div class="pt-5 container">
+    <p class="h2">5. Bootstrap для более удобного оформления самой игры и других элементов приложения </p>
+    <p class="lead">
+        <a href="https://getbootstrap.com/">Bootstrap</a> — свободный набор инструментов
+        для создания сайтов и веб-приложений. Включает в себя HTML- и CSS-шаблоны оформления для типографики,
+        веб-форм, кнопок, меток, блоков навигации и прочих компонентов веб-интерфейса,
+        включая JavaScript-расширения.
+    </p>
+    <img class="rounded mx-auto d-block" src="static/img/Bootstrap_logo.png" width="150px">
+</div>
+
+<div class="pt-5 container">
+    <p class="pt-5 h2">Разбиение кода по файлам</p>
+    <table class="table table-bordered">
+        <tr>
+            <td>poker_app</td>
+            <td>Само приложение</td>
+        </tr>
+        <tr>
+            <td>disection</td>
+            <td>Распределение ролей между игроками</td>
+        </tr>
+        <tr>
+            <td>possible_responses</td>
+            <td>Раздача игрокам возможностей хода</td>
+        </tr>
+        <tr>
+            <td>bot_move</td>
+            <td><b>Место для алгоритма вашего бота</b></td>
+        </tr>
+        <tr>
+            <td>first_row</td>
+            <td>Первый круг (ходы малого и большого блайнда)</td>
+        </tr>
+        <tr>
+            <td>one_row</td>
+            <td>Один круг</td>
+        </tr>
+        <tr>
+            <td>hand_scorer</td>
+            <td>Подсчет силы комбинации игрока</td>
+        </tr>
+        <tr>
+            <td>find_winner</td>
+            <td>Поиск победителя по очкам</td>
+        </tr>
+        <tr>
+            <td>game_info</td>
+            <td>Создаем словарь с информацией игры для передачи боту</td>
+        </tr>
+        <tr>
+            <td>cards</td>
+            <td>Здесь создается колода</td>
+        </tr>
+        <tr>
+            <td>card_to_file_name</td>
+            <td>Перевод карт из числового вида в текстовый</td>
+        </tr>
+    </table>
+</div>
+
+<div class="container">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="static/videos/me_drawing_cut.gif" width="400px">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">А это я рисую крокодила</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}

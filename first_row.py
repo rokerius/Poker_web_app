@@ -1,4 +1,5 @@
-from bot_move import bot_move
+from bot_move import bot_move_1, bot_move_2
+from game_info import give_game_info
 from one_row import one_row
 from possible_responses import give_possible_responses
 
@@ -41,9 +42,13 @@ def first_row(game_from_db, players_db, sb_num, bb_num):
         print("ХОДИТ БОТ")
 
         bot = players_db[game_from_db.id_p_now]
+        game = give_game_info(game_from_db)
         give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
-
-        response = bot_move(game_from_db, bot)
-        print("Ход Бота: " + response)
+        if players_db[game_from_db.id_p_now].bot == 1:
+            response = bot_move_1(game, bot)
+            print("Ход Бота: " + response)
+        else:
+            response = bot_move_2(game, bot)
+            print("Ход Бота: " + response)
 
         one_row(game_from_db, players_db, response)

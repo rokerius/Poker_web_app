@@ -1,4 +1,5 @@
-from bot_move import bot_move
+from bot_move import bot_move_1, bot_move_2
+from game_info import give_game_info
 from possible_responses import give_possible_responses
 
 
@@ -56,10 +57,32 @@ def one_row(game_from_db, players_db, response):
         game_from_db.count_smth = 0
         game_from_db.all_in = True
 
-    if response == "raise":
-        print(f"Сколько {players_db[game_from_db.id_p_now].name} ставит? (доступно: "
-              f"{players_db[game_from_db.id_p_now].chips})\n->")
-        game_from_db.bet_ask = True
+    if "raise" in response:
+        if response == "raise":
+            print(f"Сколько {players_db[game_from_db.id_p_now].name} ставит? (доступно: "
+                f"{players_db[game_from_db.id_p_now].chips})\n->")
+            game_from_db.bet_ask = True
+        else:
+            bet = int(response.split()[1])
+            if bet > players_db[game_from_db.id_p_now].chips or bet <= 0 \
+                    or bet < players_db[game_from_db.id_p_now].stake_gap:
+                print("error: неверный ввод Бота, он не может столько поставить!")
+            else:
+                if bet == players_db[game_from_db.id_p_now].chips:
+                    print(f"{players_db[game_from_db.id_p_now].name} ставит всё!")
+                    players_db[game_from_db.id_p_now].all_in = True
+                players_db[game_from_db.id_p_now].stake_gap = 0
+                if players_db[game_from_db.id_p_now].stake_info == "" or \
+                        players_db[game_from_db.id_p_now].stake_info == "CHECK":
+                    players_db[game_from_db.id_p_now].stake_info = "RAISE " + str(bet)
+                else:
+                    players_db[game_from_db.id_p_now].stake_info = "RAISE " + str(bet +
+                                                    int(players_db[game_from_db.id_p_now].stake_info.split()[-1]))
+                players_db[game_from_db.id_p_now].stake += bet  # Вклад
+                game_from_db.pot += bet  # Банк
+                players_db[game_from_db.id_p_now].chips -= bet  # Фищки игрока
+                game_from_db.highest_stake = players_db[game_from_db.id_p_now].stake
+                game_from_db.count_smth = 2
 
     if game_from_db.bet_ask:
         print("*Спрашиваем сколько ставит*")
@@ -82,10 +105,14 @@ def one_row(game_from_db, players_db, response):
                 print("ХОДИТ БОТ")
 
                 bot = players_db[game_from_db.id_p_now]
+                game = give_game_info(game_from_db)
                 give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
-
-                response = bot_move(game_from_db, bot)
-                print("Ход Бота: " + response)
+                if players_db[game_from_db.id_p_now].bot == 1:
+                    response = bot_move_1(game, bot)
+                    print("Ход Бота: " + response)
+                else:
+                    response = bot_move_2(game, bot)
+                    print("Ход Бота: " + response)
 
                 one_row(game_from_db, players_db, response)
 
@@ -108,9 +135,13 @@ def one_row(game_from_db, players_db, response):
                         print("ХОДИТ БОТ")
 
                         bot = players_db[game_from_db.id_p_now]
+                        game = give_game_info(game_from_db)
                         give_possible_responses(players_db, game_from_db, game_from_db.id_p_now)
-
-                        response = bot_move(game_from_db, bot)
-                        print("Ход Бота: " + response)
+                        if players_db[game_from_db.id_p_now].bot == 1:
+                            response = bot_move_1(game, bot)
+                            print("Ход Бота: " + response)
+                        else:
+                            response = bot_move_2(game, bot)
+                            print("Ход Бота: " + response)
 
                         one_row(game_from_db, players_db, response)
