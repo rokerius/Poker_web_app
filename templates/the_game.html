@@ -28,7 +28,6 @@
     </div>
     </header>
 
-    <script src="static/scripts/game_scrypt.js"></script>
 
     <div id="main">
         <div class="players">
@@ -64,26 +63,43 @@
         <div class="cards">
             <div class="cards_player-1" id="player1_cards" >
             <div class="ava_cards" style="background: rgba(204, 51, 0, 1)">
+                {% if game.simulation or game.round_ended %}
                 <div class="block_cards">
                     <img src="/static/img/cards/{{players_db[0].cards.split(',')[0]}}.png"
-                        width="100" height="150" alt="card1" id="player1_card_1"
-                         onClick="show_1();">
+                        width="100" height="150" alt="card1" id="player1_card_1">
                     <img src="/static/img/cards/{{players_db[0].cards.split(',')[1]}}.png"
-                        width="100" height="150" alt="card2" id="player1_card_2"
-                         onClick="show_1();">
+                        width="100" height="150" alt="card2" id="player1_card_2">
                 </div>
+                {% else %}
+                <div class="block_cards">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card2">
+                </div>
+                {% endif %}
+
                 <div class="chips">chips: {{ players_db[0].chips }}</div>
                 <div class="stake_info">{{players_db[0].stake_info}}</div>
             </div>
         </div>
             <div class="cards_player-2"  id="player2_cards">
             <div class="ava_cards" style="background: rgba(255, 153, 102, 1)">
+                {% if game.simulation or game.round_ended %}
                 <div class="block_cards">
                     <img src="/static/img/cards/{{players_db[1].cards.split(',')[0]}}.png"
                         width="100" height="150" alt="card1">
                     <img src="/static/img/cards/{{players_db[1].cards.split(',')[1]}}.png"
                         width="100" height="150" alt="card2">
                 </div>
+                {% else %}
+                <div class="block_cards">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card2">
+                </div>
+                {% endif %}
                 <div class="chips">chips: {{ players_db[1].chips }}</div>
                 <div class="stake_info">{{players_db[1].stake_info}}</div>
             </div>
@@ -91,12 +107,21 @@
             {% if game.number_of_players > 2 %}
                 <div class="cards_player-3"  id="player3_cards">
             <div class="ava_cards" style="background: rgba(153, 102, 255, 1)">
+                {% if game.simulation or game.round_ended %}
                 <div class="block_cards">
                     <img src="/static/img/cards/{{players_db[2].cards.split(',')[0]}}.png"
                         width="100" height="150" alt="card1">
                     <img src="/static/img/cards/{{players_db[2].cards.split(',')[1]}}.png"
                         width="100" height="150" alt="card2">
                 </div>
+                {% else %}
+                <div class="block_cards">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card2">
+                </div>
+                {% endif %}
                 <div class="chips">chips: {{ players_db[2].chips }}</div>
                 <div class="stake_info">{{players_db[2].stake_info}}</div>
             </div>
@@ -105,12 +130,21 @@
             {% if game.number_of_players > 3 %}
                 <div class="cards_player-4"  id="player4_cards">
             <div class="ava_cards" style="background: rgba(0, 102, 204, 1)">
+                {% if game.simulation or game.round_ended %}
                 <div class="block_cards">
                     <img src="/static/img/cards/{{players_db[3].cards.split(',')[0]}}.png"
                         width="100" height="150" alt="card1">
                     <img src="/static/img/cards/{{players_db[3].cards.split(',')[1]}}.png"
                         width="100" height="150" alt="card2">
                 </div>
+                {% else %}
+                <div class="block_cards">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card2">
+                </div>
+                {% endif %}
                 <div class="chips">chips: {{ players_db[3].chips }}</div>
                 <div class="stake_info">{{players_db[3].stake_info}}</div>
             </div>
@@ -119,12 +153,21 @@
             {% if game.number_of_players > 4 %}
                 <div class="cards_player-5"  id="player5_cards">
             <div class="ava_cards" style="background: rgba(102, 204, 204, 1)">
+                {% if game.simulation or game.round_ended %}
                 <div class="block_cards">
                     <img src="/static/img/cards/{{players_db[4].cards.split(',')[0]}}.png"
                         width="100" height="150" alt="card1">
                     <img src="/static/img/cards/{{players_db[4].cards.split(',')[1]}}.png"
                         width="100" height="150" alt="card2">
                 </div>
+                {% else %}
+                <div class="block_cards">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card2">
+                </div>
+                {% endif %}
                 <div class="chips">chips: {{ players_db[4].chips }}</div>
                 <div class="stake_info">{{players_db[4].stake_info}}</div>
             </div>
@@ -133,12 +176,21 @@
             {% if game.number_of_players > 5 %}
                 <div class="cards_player-6"  id="player6_cards)">
             <div class="ava_cards" style="background: rgba(153, 204, 102, 1)">
+                {% if game.simulation or game.round_ended%}
                 <div class="block_cards">
                     <img src="/static/img/cards/{{players_db[5].cards.split(',')[0]}}.png"
                         width="100" height="150" alt="card1">
                     <img src="/static/img/cards/{{players_db[5].cards.split(',')[1]}}.png"
                         width="100" height="150" alt="card2">
                 </div>
+                {% else %}
+                <div class="block_cards">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card1">
+                    <img src="/static/img/cards/default.png"
+                        width="100" height="150" alt="card2">
+                </div>
+                {% endif %}
                 <div class="chips">chips: {{ players_db[5].chips }}</div>
                 <div class="stake_info">{{players_db[5].stake_info}}</div>
             </div>
@@ -281,4 +333,7 @@
     {% endif %}
 
 </body>
+
+    <script src="static/scripts/game_scrypt.js"></script>
+
 </html>

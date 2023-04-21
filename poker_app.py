@@ -34,6 +34,12 @@ class WEB_Replies(object):
         self.app_sb = small_blind
 
 
+class TG_players_db(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), nullable=False)
+    chat_id = db.Column(db.String(128), nullable=False)
+
+
 class Player_db(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, nullable=False)
@@ -83,6 +89,7 @@ class Game_db(db.Model):
     all_in = db.Column(db.Boolean, default=False, nullable=False)
     round_ended = db.Column(db.Boolean, default=False, nullable=False)
     bet_ask = db.Column(db.Boolean, default=False, nullable=False)
+    simulation = db.Column(db.Boolean, default=True, nullable=False)
 
     def __repr__(self):
         return '<Game%r>' % self.id, self.start_chips, self.sb, self.players
@@ -93,7 +100,8 @@ act = WEB_Replies()
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home', methods=['POST', 'GET'])
-def start_asking():
+@app.route('/simulation_start', methods=['POST', 'GET'])
+def simulation_start_asking():
     if request.method == "POST":
         start_chips = int(request.form['start_chips'])
         small_blind = int(request.form['small_blind'])
@@ -112,6 +120,7 @@ def players():
         player4 = request.form['player4']
         player5 = request.form['player5']
         player6 = request.form['player6']
+        game_type = request.form['game_type'] == "1"
 
         players_str = player1 + " " + player2 + " " + player3 + " " + \
                       player4 + " " + player5 + " " + player6
@@ -142,7 +151,7 @@ def players():
                        players=players_str, number_of_players=len(players_str.split()),
                        cards_on_table=cards_on_table, int_cards_on_table=int_cards_on_table,
                        dealer=dealer, sb_name=sb_name, bb_name=bb_name,
-                       fa_name=fa_name, pot=0)
+                       fa_name=fa_name, pot=0, simulation=game_type)
         db.session.add(game)
         db.session.commit()
 
@@ -176,6 +185,7 @@ def players():
                                int_cards=int_cards_of_players,
                                list_of_special_attributes=l_of_sa,
                                possible_responses=" ")
+
             db.session.add(player)
             db.session.commit()
 

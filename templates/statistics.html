@@ -38,8 +38,7 @@
         <div class="col-md-3 text-end"></div>
     </header>
     {% for game in all_game_statistic|reverse %}
-    <script src="static/scripts/statistics.js"></script>
-    <div class="game_stat_block">
+    <div class="m-5 border border-5 rounded-3 container">
         <h2>ID: {{ game[0] }} </h2>
         <h3>Начальные фишки: {{ game[1] }}</h3>
         <h3>Малый блайнд: {{ game[2] }}</h3>
@@ -67,10 +66,10 @@
         {% endfor %}
         </div>
 
-        <div class="diagram_stat">
-            <p>А здесь хочу диаграмку</p>
-            <canvas id="myChart"></canvas>
-        </div>
+<!--        <div class="diagram_stat">-->
+<!--            <p>А здесь хочу диаграмку</p>-->
+<!--            <canvas id="myChart"></canvas>-->
+<!--        </div>-->
 
 
     </div>
@@ -96,6 +95,8 @@
     <script type="text/javascript" src="js/mdb.min.js"></script>
     <!-- Custom scripts -->
     <script type="text/javascript"></script>
+
+    <script src="static/scripts/statistics.js"></script>
 
 </body>
 </html>
