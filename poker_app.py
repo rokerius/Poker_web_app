@@ -55,7 +55,6 @@ class Player_db(db.Model):
     fold = db.Column(db.Boolean, default=False, nullable=False)
     all_in = db.Column(db.Boolean, default=False, nullable=False)
     win = db.Column(db.Boolean, default=False, nullable=False)
-    ready = db.Column(db.Boolean, default=False, nullable=False)
     list_of_special_attributes = db.Column(db.String(128), nullable=False)
     possible_responses = db.Column(db.String(128), nullable=False)
     score = db.Column(db.String(128), default="", nullable=False)

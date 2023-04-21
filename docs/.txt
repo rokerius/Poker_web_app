@@ -1,5 +1,0 @@
-https://github.com/apehex/awesome-poker#leduc-holdem
-(Много документов, ссылок, полезных сайтов)
-
-https://colab.research.google.com/drive/1sLgDZRGmRojkJUEcHwz9o1j9ZN2j4l0p?usp=sharing
-(Чел из Беркли и его калькулятор)

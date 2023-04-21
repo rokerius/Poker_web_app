@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block body %}
+<div class="container">
+    <h1 class="display-5 fw-bold text-center ch-1 mb-3">Этапы разработки</h1>
+</div>
+
 <div class="mb-5 mt-5 container">
     <p class="h2">1. Игра в консоли на Python</p>
     <p class="lead">
@@ -39,22 +43,175 @@
         предоставляя полезные значения по умолчанию и дополнительные помощники,
         облегчающие выполнение общих задач.
     </p>
-    <div class="m-5 container">
-        <p class="lead">
-            База данных состоит из двух таблиц: игр и игроков.
-        </p>
-        <div>
-            <div style="float: left;">
-            <img class="rounded mx-auto d-block" src="static/img/sqlAlchemy.jpg" width="400px" >
-            <img class="rounded mx-auto d-block" src="static/img/players_db_demo.jpg">
-            </div>
-            <img class="rounded mx-auto d-block" src="static/img/game_db_demo.jpg">
-        </div>
-
-    </div>
+    <img class="rounded mx-auto d-block" src="static/img/sqlAlchemy.jpg" width="400px" >
 </div>
 
-<div class="pt-5 container">
+<div class="container">
+        <p class="lead">
+            База данных состоит из таблицЫ игр и таблицы игроков.
+        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-light table-bordered">
+                <tr class="table-primary">
+                    <th>Game_db</th>
+                    <td>(Все об игре)</td>
+                </tr>
+                <tr>
+                    <td>start_chips</td>
+                    <td>Начальные фишки каждого игрока</td>
+                </tr>
+                <tr>
+                    <td>sb</td>
+                    <td>Сколько фишек малый блайнд</td>
+                </tr>
+                <tr>
+                    <td>players</td>
+                    <td>Список игроков в игре</td>
+                </tr>
+                <tr>
+                    <td>number_of_players</td>
+                    <td>Число игркоов</td>
+                </tr>
+                <tr>
+                    <td>cards_on_table</td>
+                    <td>Все 5 карт, которые будут на столе в текстовом виде</td>
+                </tr>
+                <tr>
+                    <td>int_cards_on_table</td>
+                    <td>Все 5 карт, которые будут на столе в числовом виде</td>
+                </tr>
+                <tr>
+                    <td>dealer; sb_name; bb_name; fa_name</td>
+                    <td>Имя дилера, малого блайнда, большого блайнда, и первого игрока после</td>
+                </tr>
+                <tr>
+                    <td>highest_stake</td>
+                    <td>Ниивысшая сумарная ставка игрока в игре</td>
+                </tr>
+                <tr>
+                    <td>pot</td>
+                    <td>Банк</td>
+                </tr>
+                <tr>
+                    <td>row</td>
+                    <td>Этап игры</td>
+                </tr>
+                <tr>
+                    <td>id_p_now</td>
+                    <td>Номер игрока, который ходит сейча</td>
+                </tr>
+                <tr>
+                    <td>count_smth</td>
+                    <td>Считает, все ли скинули нужное колличество фишек, чтобы закончить круг</td>
+                </tr>
+                <tr>
+                    <td>cards_show_status</td>
+                    <td>Отвечает за то, сколько карт со стола показать игрокам</td>
+                </tr>
+                <tr>
+                    <td>n_round</td>
+                    <td>Номер раунда в этой игре</td>
+                </tr>
+                <tr>
+                    <td>n_round</td>
+                    <td>Номер раунда в этой игре</td>
+                </tr>
+                <tr>
+                    <td>fold_list</td>
+                    <td>Список игроков, которые пасанули</td>
+                </tr>
+                <tr>
+                    <td>winners</td>
+                    <td>список победителей</td>
+                </tr>
+                <tr>
+                    <td>fold_out; all_in</td>
+                    <td>Пасанули ли все кроме одного; Один из игроков идет в ALL-IN</td>
+                </tr>
+                <tr>
+                    <td>round_ended</td>
+                    <td>Закончился раунд</td>
+                </tr>
+                <tr>
+                    <td>bet_ask</td>
+                    <td>Нгра спрашивает у игрока сколько ставить</td>
+                </tr>
+            </table>
+            </div>
+
+            <div class="col-md-6">
+                <table class="table table-light table-bordered">
+                <tr class="table-primary">
+                    <th>Player_db</th>
+                    <td>(Все об игроке)</td>
+                </tr>
+                <tr>
+                    <td>Game_id</td>
+                    <td>Привязывает игрока к определенной игре</td>
+                </tr>
+                <tr>
+                    <td>bot</td>
+                    <td>Отвечает играет человек или различные боты</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>Имя</td>
+                </tr>
+                <tr>
+                    <td>chips</td>
+                    <td>Фишки игрока</td>
+                </tr>
+                <tr>
+                    <td>stake_info</td>
+                    <td>Информация о ставке игрока, выводящаяся в приложение</td>
+                </tr>
+                <tr>
+                    <td>stake</td>
+                    <td>Суммарная ставка игрока за весь раунд</td>
+                </tr>
+                <tr>
+                    <td>stake_gap</td>
+                    <td>Разница между тем, какое наибольшее сумарное число фишек поставил
+                        какой-либо игрок и вашей суммарной ставкой </td>
+                </tr>
+                <tr>
+                    <td>k_wins</td>
+                    <td>Число побед игрока за данную игру</td>
+                </tr>
+                <tr>
+                    <td>cards</td>
+                    <td>Карты игрока, представленые в текстовом виде</td>
+                </tr>
+                <tr>
+                    <td>int_cards</td>
+                    <td>Карты игрока, представленные ввиде чисел</td>
+                </tr>
+                <tr>
+                    <td>fold</td>
+                    <td>Пасанул ли игрок</td>
+                </tr>
+                <tr>
+                    <td>all_in</td>
+                    <td>Идет ли игрок в ALL-IN</td>
+                </tr>
+                <tr>
+                    <td>win</td>
+                    <td>Победил ли игрок</td>
+                </tr>
+                <tr>
+                    <td>list_of_special_attributes</td>
+                    <td>Список ролей игрока</td>
+                </tr>
+                <tr>
+                    <td>score</td>
+                    <td>Оценка силы комбинации игрока</td>
+                </tr>
+            </table>
+            </div>
+        </div>
+</div>
+<div class="mt-5 pt-5 container">
     <p class="h2">5. Bootstrap для более удобного оформления самой игры и других элементов приложения </p>
     <p class="lead">
         <a href="https://getbootstrap.com/">Bootstrap</a> — свободный набор инструментов
@@ -67,7 +224,7 @@
 
 <div class="pt-5 container">
     <p class="pt-5 h2">Разбиение кода по файлам</p>
-    <table class="table table-bordered">
+    <table class="table  table-light table-bordered">
         <tr>
             <td>poker_app</td>
             <td>Само приложение</td>
