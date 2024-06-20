@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
+# at first in Terminal: pip install -U Flask-SQLAlchemy
+# then run poker_app
+
 from bot_move import bot_move_1, bot_move_2
 from disection import disection
 from find_winner import find_winner
